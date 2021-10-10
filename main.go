@@ -21,67 +21,26 @@ func main() {
 	fmt.Println("Database connection succeed")
 	db.AutoMigrate(&book.Book{})
 
+	bookRepository := book.NewRepository(db)
+
+	// GET All BOOK
+	books, err := bookRepository.FindAll()
+	for _, e := range books {
+		fmt.Println("ttile :", e.Title)
+	}
+
+	book, err := bookRepository.FindById(2)
+	fmt.Println(book)
+
 	// // CREATE BOOK
-	// book := book.Book{}
-	// book.Title = "Naruto"
-	// book.Price = 60000
-	// book.Discount = 10
-	// book.Description = "chapter 442"
-	// book.Rating = 4
-
-	// err = db.Create(&book).Error
-	// if err != nil {
-	// 	fmt.Println("==========================")
-	// 	fmt.Println("error creating book record")
-	// 	fmt.Println("==========================")
+	// book := book.Book{
+	// 	Title:       "One Punch Man",
+	// 	Description: "Chapter 54",
+	// 	Price:       65000,
+	// 	Rating:      5,
+	// 	Discount:    1,
 	// }
-
-	// // GET BOOK
-	// var books []book.Book
-
-	// err = db.Find(&books).Error
-	// if err != nil {
-	// 	fmt.Println("==========================")
-	// 	fmt.Println("error find book record")
-	// 	fmt.Println("==========================")
-	// }
-	// // list book
-	// for _, e := range books {
-	// 	fmt.Println(e.Title)
-	// 	fmt.Println(e.Price)
-	// }
-
-	// // Update
-	// var book book.Book
-	// err = db.Where("id = ?", 1).First(&book).Error
-	// if err != nil {
-	// 	fmt.Println("==========================")
-	// 	fmt.Println("error find book record")
-	// 	fmt.Println("==========================")
-	// }
-
-	// book.Title = "One Piece New Cover"
-	// err = db.Save(&book).Error
-	// if err != nil {
-	// 	fmt.Println("==========================")
-	// 	fmt.Println("error update book record")
-	// 	fmt.Println("==========================")
-	// }
-
-	// // Delete
-	var book book.Book
-	err = db.Where("id = ?", 1).First(&book).Error
-	if err != nil {
-		fmt.Println("==========================")
-		fmt.Println("error find book record")
-		fmt.Println("==========================")
-	}
-	err = db.Delete(&book).Error
-	if err != nil {
-		fmt.Println("==========================")
-		fmt.Println("error delete book record")
-		fmt.Println("==========================")
-	}
+	// bookRepository.Create(book)
 
 	router := gin.Default()
 
@@ -99,3 +58,9 @@ func main() {
 
 	router.Run(":8888")
 }
+
+// main
+// service --> feature business, logic
+// repository --> berhubungan dgn databse
+// db
+// mysql
