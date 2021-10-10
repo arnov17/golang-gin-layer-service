@@ -22,25 +22,23 @@ func main() {
 	db.AutoMigrate(&book.Book{})
 
 	bookRepository := book.NewRepository(db)
+	bookService := book.NewService(bookRepository)
 
-	// GET All BOOK
-	books, err := bookRepository.FindAll()
-	for _, e := range books {
-		fmt.Println("ttile :", e.Title)
-	}
-
-	book, err := bookRepository.FindById(2)
-	fmt.Println(book)
-
-	// // CREATE BOOK
-	// book := book.Book{
-	// 	Title:       "One Punch Man",
-	// 	Description: "Chapter 54",
-	// 	Price:       65000,
-	// 	Rating:      5,
-	// 	Discount:    1,
+	// // GET All BOOK
+	// books, err := bookRepository.FindAll()
+	// for _, e := range books {
+	// 	fmt.Println("ttile :", e.Title)
 	// }
-	// bookRepository.Create(book)
+
+	// book, err := bookRepository.FindById(2)
+	// fmt.Println(book)
+
+	// CREATE BOOK
+	bookRequest := book.BookRequest{
+		Title: "One Punch Man",
+		Price: "65000",
+	}
+	bookService.Create(bookRequest)
 
 	router := gin.Default()
 
